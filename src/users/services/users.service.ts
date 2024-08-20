@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from 'src/dtos/users.dtos';
-import { User } from 'src/entities/user.entity';
+import { CreateUserDto, UpdateUserDto } from 'src/users/dtos/users.dtos';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -23,7 +23,6 @@ export class UsersService {
   ];
 
   findAll(limit?: number, offset?: number) {
-    console.log(limit, offset);
     return this.users;
   }
 

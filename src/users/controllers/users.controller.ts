@@ -11,17 +11,14 @@ import {
   HttpCode,
   ParseIntPipe,
 } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from 'src/dtos/users.dtos';
-import { UsersService } from 'src/services/users/users.service';
+import { CreateUserDto, UpdateUserDto } from 'src/users/dtos/users.dtos';
+import { UsersService } from 'src/users/services/users.service';
 
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
   @Get('')
-  getUsers(
-    @Query('limit', ParseIntPipe) limit = 100,
-    @Query('offset', ParseIntPipe) offset = 0,
-  ) {
+  getUsers(@Query('limit') limit?, @Query('offset') offset?) {
     return this.usersService.findAll(limit, offset);
   }
 

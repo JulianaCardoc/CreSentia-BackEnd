@@ -9,7 +9,6 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
-  ParseIntPipe,
 } from '@nestjs/common';
 import {
   CreateCustomerDto,
@@ -27,7 +26,7 @@ export class CustomersController {
 
   @Get(':customerId')
   @HttpCode(HttpStatus.ACCEPTED)
-  getOneById(@Param('customerId', ParseIntPipe) customerId: number) {
+  getOneById(@Param('customerId') customerId: string) {
     return this.customersService.findOne(customerId);
   }
 
@@ -37,12 +36,12 @@ export class CustomersController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() payload: UpdateCustomerDto) {
+  update(@Param('id') id: string, @Body() payload: UpdateCustomerDto) {
     return this.customersService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.customersService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.customersService.remove(id);
   }
 }

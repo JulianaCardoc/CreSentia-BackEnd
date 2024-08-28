@@ -12,9 +12,11 @@ import { MembershipsModule } from './memberships/memberships.module';
 import { UserMembershipModule } from './user-membership/module/module.module';
 import { UserMembershipController } from './user-membership/controllers/userMembership.controller';
 import { UserMembershipService } from './user-membership/services/userMembership.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
+    TypeOrmModule,
     UsersModule,
     SalesModule,
     DatabaseModule,

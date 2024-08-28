@@ -19,3 +19,13 @@ export class CreateCustomerDto {
 }
 
 export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}
+
+export class LoginCustomerDto {
+  @IsNotEmpty()
+  @IsString()
+  readonly email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly password: string;
+}

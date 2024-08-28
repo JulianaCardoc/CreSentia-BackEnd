@@ -1,13 +1,21 @@
-import { Injectable, NotFoundException, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Inject,
+  HttpException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
   CreateCustomerDto,
   UpdateCustomerDto,
+  LoginCustomerDto,
 } from 'src/users/dtos/customers.dtos';
 import { Customer } from 'src/users/entities/customer.entity';
 import { Client } from 'pg';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class CustomersService {
@@ -15,6 +23,7 @@ export class CustomersService {
     @Inject('PG') private clientPg: Client,
     private configService: ConfigService,
     @InjectRepository(Customer) private productRepo: Repository<Customer>,
+    private jwtService: JwtService,
   ) {}
 
   findAll(limit?: number, offset?: number) {
@@ -30,8 +39,14 @@ export class CustomersService {
     return customer;
   }
 
-  create(payload: CreateCustomerDto) {
-    const newCustomer = this.productRepo.create(payload);
+  async create(payload: CreateCustomerDto) {
+    const { password } = payload;
+    const hashpassword = await bcrypt.hash(password, 10);
+    const newCustomer = this.productRepo.create({
+      email: payload.email,
+      password: hashpassword,
+      nickname: payload.nickname,
+    });
     return this.productRepo.save(newCustomer);
   }
 
@@ -43,6 +58,21 @@ export class CustomersService {
 
   remove(id: string) {
     return this.productRepo.delete(id);
+  }
+
+  async login(payload: LoginCustomerDto) {
+    const { email, password } = payload;
+    const findCustomer = await this.productRepo.findOneBy({ email });
+    console.log(findCustomer);
+    if (!findCustomer) throw new HttpException('Usuario_No_Encontrado', 404);
+    const checkPassword = await bcrypt.compare(password, findCustomer.password);
+    if (!checkPassword) throw new HttpException('Contraseña_Invalida', 403);
+    const token = this.jwtService.sign(payload);
+    const data = {
+      customer: findCustomer,
+      token,
+    };
+    return data;
   }
 
   // getTasks() {

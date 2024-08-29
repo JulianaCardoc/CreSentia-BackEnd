@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -27,7 +26,7 @@ export class TherapistController {
 
   @Get(':therapistId')
   @HttpCode(HttpStatus.ACCEPTED)
-  getOneById(@Param('therapistId', ParseIntPipe) therapistId: number) {
+  getOneById(@Param('therapistId') therapistId: string) {
     return this.therapistsService.findOne(therapistId);
   }
 
@@ -37,12 +36,12 @@ export class TherapistController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() payload: UpdateTherapistDto) {
+  update(@Param('id') id: string, @Body() payload: UpdateTherapistDto) {
     return this.therapistsService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.therapistsService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.therapistsService.softRemove(id);
   }
 }

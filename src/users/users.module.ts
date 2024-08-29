@@ -5,9 +5,10 @@ import { CustomersService } from './services/customers.service';
 import { TherapistService } from './services/therapist.service';
 import { TherapistController } from './controllers/therapist.controller';
 import { Customer } from './entities/customer.entity';
+import { Therapist } from './entities/therapist.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Customer])],
+  imports: [TypeOrmModule.forFeature([Customer, Therapist])],
   controllers: [CustomersController, TherapistController],
   providers: [CustomersService, TherapistService],
 })

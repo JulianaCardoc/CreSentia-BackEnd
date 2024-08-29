@@ -6,7 +6,6 @@ import {
   Post,
   Put,
   Delete,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { MembershipService } from '../services/memberships.service';
 import {
@@ -24,25 +23,25 @@ export class MembershipsController {
   }
 
   @Get(':id')
-  findOneMembership(@Param('id', ParseIntPipe) id: number) {
+  findOneMembership(@Param('id') id: string) {
     return this.membershipService.findOne(id);
   }
 
-  @Post()
+  @Post('')
   createMembership(@Body() payload: CreateMembershipDto) {
     return this.membershipService.create(payload);
   }
 
   @Put(':id')
   updateMembership(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() payload: UpdateMembershipDto,
   ) {
     return this.membershipService.update(id, payload);
   }
 
   @Delete(':id')
-  deleteMembership(@Param('id') id: number) {
-    return this.membershipService.remove(+id);
+  deleteMembership(@Param('id') id: string) {
+    return this.membershipService.remove(id);
   }
 }

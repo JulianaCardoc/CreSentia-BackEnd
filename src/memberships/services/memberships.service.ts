@@ -4,61 +4,55 @@ import {
   CreateMembershipDto,
   UpdateMembershipDto,
 } from '../dtos/memberships.dtos';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 
 @Injectable()
 export class MembershipService {
-  private counterId = 1;
-  private memberships: Membership[] = [
-    {
-      id: 1,
-      name: 'Membership1',
-      description: 'First membership',
-      price: 200000,
-      sessions: 3,
-    },
-  ];
+  constructor(
+    @InjectRepository(Membership) private membershiRepo: Repository<Membership>,
+  ) {}
 
   findAll() {
-    return this.memberships;
+    return this.membershiRepo.find();
   }
 
-  findOne(id: number) {
-    const membership = this.memberships.find((item) => item.id === +id);
+  async findOne(id: string) {
+    const membership = await this.membershiRepo.findOneBy({ id });
     if (!membership) {
-      throw new NotFoundException(`Cannot find ${id}`);
+      throw new NotFoundException(`Membership #${id} not found`);
     }
     return membership;
   }
 
   create(payload: CreateMembershipDto) {
-    this.counterId += 1;
-    const newMembership = {
-      id: this.counterId,
-      ...payload,
-    };
-    this.memberships.push(newMembership);
-    return newMembership;
+    const newMembership = this.membershiRepo.create(payload);
+    return this.membershiRepo.save(newMembership);
   }
 
-  async update(id: number, payload: UpdateMembershipDto) {
-    const getMembership = await this.findOne(id);
-    if (getMembership) {
-      const index = this.memberships.findIndex((item) => item.id === id);
-      this.memberships[index] = {
-        ...getMembership,
-        ...payload,
-      };
-      return this.memberships[index];
-    }
-    return null;
+  async update(id: string, payload: UpdateMembershipDto) {
+    const membership = await this.membershiRepo.findOneBy({ id });
+    this.membershiRepo.merge(membership, payload);
+    return this.membershiRepo.save(membership);
   }
 
-  remove(id: number) {
-    const index = this.memberships.findIndex((item) => item.id === id);
-    if (index === -1) {
-      throw new NotFoundException(`Cannot find ${id}`);
+  async remove(id: string) {
+    if (!id) {
+      throw new NotFoundException(`Membership #${id} not found`);
     }
-    this.memberships.splice(index, 1);
-    return true;
+    const res: DeleteResult = await this.membershiRepo.delete(id);
+    if (res.affected > 0) {
+      return `Membership deleted successfully`;
+    }
+  }
+
+  async softRemove(id: string) {
+    if (!id) {
+      throw new NotFoundException(`Membership #${id} not found`);
+    }
+    const res: DeleteResult = await this.membershiRepo.softDelete(id);
+    if (res.affected > 0) {
+      return `Membership deleted successfully`;
+    }
   }
 }

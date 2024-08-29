@@ -22,8 +22,8 @@ export class CustomersService {
     return this.productRepo.find();
   }
 
-  findOne(id: string) {
-    const customer = this.productRepo.findOneBy({ id });
+  async findOne(id: string) {
+    const customer = await this.productRepo.findOneBy({ id });
     if (!customer) {
       throw new NotFoundException(`Customer #${id} not found`);
     }
@@ -44,15 +44,4 @@ export class CustomersService {
   remove(id: string) {
     return this.productRepo.delete(id);
   }
-
-  // getTasks() {
-  //   return new Promise((resolve, reject) => {
-  //     this.clientPg.query('SELECT * FROM tasks', (err, res) => {
-  //       if (err) {
-  //         reject(err);
-  //       }
-  //       resolve(res.rows);
-  //     });
-  //   });
-  // }
 }

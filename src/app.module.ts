@@ -9,9 +9,7 @@ import * as Joi from 'joi';
 import { environments } from './environments';
 import config from './config';
 import { MembershipsModule } from './memberships/memberships.module';
-import { UserMembershipModule } from './user-membership/module/module.module';
-import { UserMembershipController } from './user-membership/controllers/userMembership.controller';
-import { UserMembershipService } from './user-membership/services/userMembership.service';
+import { UserMembershipModule } from './user-membership/module.module';
 
 @Module({
   imports: [
@@ -33,7 +31,7 @@ import { UserMembershipService } from './user-membership/services/userMembership
       }),
     }),
   ],
-  controllers: [AppController, UserMembershipController],
-  providers: [AppService, UserMembershipService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

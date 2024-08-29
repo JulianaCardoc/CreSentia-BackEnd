@@ -6,21 +6,37 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export class Membership {
+export class UserMembership {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  name: string;
+  @Column({
+    type: 'int',
+    name: 'completed_appointments',
+    nullable: false,
+  })
+  completedAppointments: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  description: string;
+  @Column({
+    type: 'boolean',
+    name: 'is_active',
+    nullable: false,
+  })
+  isActive: boolean;
 
-  @Column({ type: 'int', length: 255 })
-  price: number;
+  @Column({
+    type: 'timestamptz',
+    name: 'start_date',
+    nullable: false,
+  })
+  startDate: Date;
 
-  @Column({ type: 'int' })
-  sessions: number;
+  @Column({
+    type: 'timestamptz',
+    name: 'due_date',
+    nullable: true,
+  })
+  dueDate: Date;
 
   @CreateDateColumn({
     type: 'timestamptz',

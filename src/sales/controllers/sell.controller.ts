@@ -6,10 +6,8 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { CreateSellDto, UpdateSellDto } from '../dtos/sells.dtos';
 import { SellService } from '../services/sell.service';
@@ -18,13 +16,13 @@ import { SellService } from '../services/sell.service';
 export class SellController {
   constructor(private sellsService: SellService) {}
   @Get('')
-  getAll(@Query('limit') limit?, @Query('offset') offset?) {
-    return this.sellsService.findAll(limit, offset);
+  getAll() {
+    return this.sellsService.findAll();
   }
 
   @Get(':sellId')
   @HttpCode(HttpStatus.ACCEPTED)
-  getOneById(@Param('sellId', ParseIntPipe) sellId: number) {
+  getOneById(@Param('sellId') sellId: string) {
     return this.sellsService.findOne(sellId);
   }
 
@@ -34,12 +32,12 @@ export class SellController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() payload: UpdateSellDto) {
+  update(@Param('id') id: string, @Body() payload: UpdateSellDto) {
     return this.sellsService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.sellsService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.sellsService.remove(id);
   }
 }

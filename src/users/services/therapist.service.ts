@@ -4,27 +4,22 @@ import {
   CreateTherapistDto,
   UpdateTherapistDto,
 } from '../dtos/therapists.dtos';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 
 @Injectable()
 export class TherapistService {
-  private counterId = 1;
-  private therapists: Therapist[] = [
-    {
-      id: 1,
-      email: 'correa@gmail.com',
-      password: '100992831ww2',
-      profession: 'psychologist',
-      specialty: 'nose',
-    },
-  ];
+  constructor(
+    @InjectRepository(Therapist) private therapistRepo: Repository<Therapist>,
+  ) {}
 
   findAll(limit?: number, offset?: number) {
     console.log(limit, offset);
-    return this.therapists;
+    return this.therapistRepo.find();
   }
 
-  findOne(id: number) {
-    const therapist = this.therapists.find((item) => item.id === +id);
+  async findOne(id: string) {
+    const therapist = await this.therapistRepo.findOneBy({ id });
     if (!therapist) {
       throw new NotFoundException(`Therapist #${id} not found`);
     }
@@ -32,34 +27,33 @@ export class TherapistService {
   }
 
   create(payload: CreateTherapistDto) {
-    this.counterId = this.counterId + 1;
-    const newTherapist = {
-      id: this.counterId,
-      ...payload,
-    };
-    this.therapists.push(newTherapist);
-    return newTherapist;
+    const newTherapist = this.therapistRepo.create(payload);
+    return this.therapistRepo.save(newTherapist);
   }
 
-  async update(id: number, payload: UpdateTherapistDto) {
-    const therapist = await this.findOne(id);
-    if (therapist) {
-      const index = this.therapists.findIndex((item) => item.id === id);
-      this.therapists[index] = {
-        ...therapist,
-        ...payload,
-      };
-      return this.therapists[index];
-    }
-    return null;
+  async update(id: string, payload: UpdateTherapistDto) {
+    const therapist = await this.therapistRepo.findOneBy({ id });
+    this.therapistRepo.merge(therapist, payload);
+    return this.therapistRepo.save(therapist);
   }
 
-  remove(id: number) {
-    const index = this.therapists.findIndex((item) => item.id === id);
-    if (index === -1) {
+  async remove(id: string) {
+    if (!id) {
       throw new NotFoundException(`Therapist #${id} not found`);
     }
-    this.therapists.splice(index, 1);
-    return true;
+    const res: DeleteResult = await this.therapistRepo.delete(id);
+    if (res.affected > 0) {
+      return `Therapist deleted successfully`;
+    }
+  }
+
+  async softRemove(id: string) {
+    if (!id) {
+      throw new NotFoundException(`Therapist #${id} not found`);
+    }
+    const res: DeleteResult = await this.therapistRepo.softDelete(id);
+    if (res.affected > 0) {
+      return `Therapist deleted successfully`;
+    }
   }
 }

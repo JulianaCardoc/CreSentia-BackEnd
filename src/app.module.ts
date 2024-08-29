@@ -9,15 +9,16 @@ import * as Joi from 'joi';
 import { environments } from './environments';
 import config from './config';
 import { MembershipsModule } from './memberships/memberships.module';
-import { UserMembershipModule } from './user-membership/module.module';
+
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
+    TypeOrmModule,
     UsersModule,
     SalesModule,
     DatabaseModule,
     MembershipsModule,
-    UserMembershipModule,
     ConfigModule.forRoot({
       envFilePath: environments[process.env.NODE_ENV] || '.env',
       load: [config],

@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserMembership } from './userMembership.entity';
 
 export class Membership {
   @PrimaryGeneratedColumn('uuid')
@@ -40,4 +42,10 @@ export class Membership {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToMany(
+    () => UserMembership,
+    (userMembership) => userMembership.membership,
+  )
+  userMemberships: UserMembership[];
 }

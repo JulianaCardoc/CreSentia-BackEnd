@@ -5,27 +5,17 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  JoinColumn,
-  OneToOne,
+  OneToMany,
 } from 'typeorm';
-import { Person } from './person.entity';
+import { Customer } from './customer.entity';
 
 @Entity()
-export class Therapist {
+export class Rol {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', length: 255, unique: true })
-  email: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  password: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  profession: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  specialty: string;
+  name: string;
 
   @CreateDateColumn({
     type: 'timestamptz',
@@ -46,7 +36,6 @@ export class Therapist {
   })
   deletedAt: Date;
 
-  @OneToOne(() => Person, { nullable: false })
-  @JoinColumn()
-  person: Person;
+  @OneToMany(() => Customer, (customer) => customer.rol)
+  customers: Customer[];
 }

@@ -4,7 +4,15 @@ import {
   Entity,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
+  OneToOne,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
 } from 'typeorm';
+import { Person } from './person.entity';
+import { Rol } from './rol.entity';
+import { UserMembership } from 'src/memberships/entities/userMembership.entity';
 
 @Entity()
 export class Customer {
@@ -31,4 +39,21 @@ export class Customer {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @DeleteDateColumn({
+    type: 'timestamptz',
+    name: 'deleted_at',
+    nullable: true,
+  })
+  deletedAt: Date;
+
+  @OneToOne(() => Person, { nullable: false })
+  @JoinColumn()
+  person: Person;
+
+  @ManyToOne(() => Rol, (rol) => rol.customers)
+  rol: Rol;
+
+  @OneToMany(() => UserMembership, (userMembership) => userMembership.customer)
+  userMemberships: UserMembership[];
 }

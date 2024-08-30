@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCustomerDto {
@@ -16,6 +16,21 @@ export class CreateCustomerDto {
   @IsString()
   @IsNotEmpty()
   readonly nickname: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsUUID()
+  @IsNotEmpty()
+  readonly personId: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsUUID()
+  readonly rolId: string;
+
+  @ApiProperty()
+  @IsUUID()
+  readonly userMembershipId: string;
 }
 
 export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}

@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { SalesModule } from './sales/sales.module';
-import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { environments } from './environments';
-import config from './config';
-import { MembershipsModule } from './memberships/memberships.module';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import config from './config';
+import { UsersModule } from './users/users.module';
+import { SalesModule } from './sales/sales.module';
+import { DatabaseModule } from './database/database.module';
+import { MembershipsModule } from './memberships/memberships.module';
 
 @Module({
   imports: [

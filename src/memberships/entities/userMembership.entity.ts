@@ -1,10 +1,13 @@
+import { Customer } from 'src/users/entities/customer.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Membership } from './membership.entities';
 
 export class UserMembership {
   @PrimaryGeneratedColumn('uuid')
@@ -56,4 +59,10 @@ export class UserMembership {
     nullable: true,
   })
   deletedAt: Date;
+
+  @ManyToOne(() => Customer, (customer) => customer.userMemberships)
+  customer: Customer;
+
+  @ManyToOne(() => Membership, (membership) => membership.userMemberships)
+  membership: Membership;
 }

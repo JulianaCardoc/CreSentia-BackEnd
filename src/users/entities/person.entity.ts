@@ -5,27 +5,39 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  JoinColumn,
-  OneToOne,
 } from 'typeorm';
-import { Person } from './person.entity';
 
 @Entity()
-export class Therapist {
+export class Person {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255, unique: true })
-  email: string;
+  @Column({ type: 'varchar', length: 255 })
+  name: string;
 
   @Column({ type: 'varchar', length: 255 })
-  password: string;
+  lastname: string;
+
+  @Column({ type: 'int' })
+  phone: number;
 
   @Column({ type: 'varchar', length: 255 })
-  profession: string;
+  sex: string;
+
+  @Column({ type: 'int', unique: true })
+  identification: number;
 
   @Column({ type: 'varchar', length: 255 })
-  specialty: string;
+  eps: string;
+
+  @Column({ type: 'varchar', length: 255, name: 'birth_date' })
+  birthDate: Date;
+
+  @Column({ type: 'varchar', length: 255 })
+  country: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  city: string;
 
   @CreateDateColumn({
     type: 'timestamptz',
@@ -45,8 +57,4 @@ export class Therapist {
     nullable: true,
   })
   deletedAt: Date;
-
-  @OneToOne(() => Person, { nullable: false })
-  @JoinColumn()
-  person: Person;
 }

@@ -11,7 +11,7 @@ import {
 import { Person } from './person.entity';
 
 @Entity()
-export class Therapist {
+export class Admin {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,12 +20,6 @@ export class Therapist {
 
   @Column({ type: 'varchar', length: 255 })
   password: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  profession: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  specialty: string;
 
   @CreateDateColumn({
     type: 'timestamptz',

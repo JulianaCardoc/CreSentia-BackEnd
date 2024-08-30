@@ -16,6 +16,8 @@ import { Client } from 'pg';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { PersonService } from './person.service';
+import { RolService } from './rol.service';
 
 @Injectable()
 export class CustomersService {
@@ -24,11 +26,15 @@ export class CustomersService {
     private configService: ConfigService,
     @InjectRepository(Customer) private productRepo: Repository<Customer>,
     private jwtService: JwtService,
+    private personService: PersonService,
+    private rolService:RolService,
   ) {}
 
   findAll(limit?: number, offset?: number) {
     console.log(limit, offset);
-    return this.productRepo.find();
+    return this.productRepo.find({
+      relations: ['person'],
+    });
   }
 
   async findOne(id: string) {
@@ -47,6 +53,10 @@ export class CustomersService {
       password: hashpassword,
       nickname: payload.nickname,
     });
+    if (payload.personId) {
+      const person = await this.personService.findOne(payload.personId);
+      newCustomer.person = person;
+    }
     return this.productRepo.save(newCustomer);
   }
 

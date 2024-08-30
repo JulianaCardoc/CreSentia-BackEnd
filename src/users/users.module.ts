@@ -9,10 +9,19 @@ import { Customer } from './entities/customer.entity';
 import { Therapist } from './entities/therapist.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstant } from './jwt.constant';
+import { AdminController } from './controllers/admin.controller';
+import { AdminService } from './services/admin.service';
+import { RolService } from './services/rol.service';
+import { RolController } from './controllers/rol.controller';
+import { Admin } from './entities/admin.entity';
+import { Rol } from './entities/rol.entity';
+import { PersonController } from './controllers/person.controller';
+import { PersonService } from './services/person.service';
+import { Person } from './entities/person.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Customer, Therapist]),
+    TypeOrmModule.forFeature([Customer, Therapist, Admin, Rol, Person]),
     JwtModule.register({
       global: true,
       secret: jwtConstant.secret,
@@ -23,7 +32,16 @@ import { jwtConstant } from './jwt.constant';
     CustomersController,
     TherapistController,
     AuthenticationController,
+    AdminController,
+    RolController,
+    PersonController,
   ],
-  providers: [CustomersService, TherapistService],
+  providers: [
+    CustomersService,
+    TherapistService,
+    AdminService,
+    RolService,
+    PersonService,
+  ],
 })
 export class UsersModule {}

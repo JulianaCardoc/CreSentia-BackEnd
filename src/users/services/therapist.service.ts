@@ -6,16 +6,20 @@ import {
 } from '../dtos/therapists.dtos';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
+import { PersonService } from '../services/person.service';
 
 @Injectable()
 export class TherapistService {
   constructor(
     @InjectRepository(Therapist) private therapistRepo: Repository<Therapist>,
+    private personService: PersonService,
   ) {}
 
   findAll(limit?: number, offset?: number) {
     console.log(limit, offset);
-    return this.therapistRepo.find();
+    return this.therapistRepo.find({
+      relations: ['person'],
+    });
   }
 
   async findOne(id: string) {
@@ -26,8 +30,12 @@ export class TherapistService {
     return therapist;
   }
 
-  create(payload: CreateTherapistDto) {
+  async create(payload: CreateTherapistDto) {
     const newTherapist = this.therapistRepo.create(payload);
+    if (payload.personId) {
+      const person = await this.personService.findOne(payload.personId);
+      newTherapist.person = person;
+    }
     return this.therapistRepo.save(newTherapist);
   }
 

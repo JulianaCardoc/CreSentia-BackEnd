@@ -1,8 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateTherapistDto {
+export class CreateAdminDto {
   readonly id: string;
   @ApiProperty()
   @IsString()
@@ -12,18 +12,12 @@ export class CreateTherapistDto {
   @IsString()
   @IsNotEmpty()
   readonly password: string;
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  readonly profession: string;
-  @ApiProperty()
-  @IsString()
-  readonly specialty: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  @IsUUID()
   readonly personId: string;
 }
 
-export class UpdateTherapistDto extends PartialType(CreateTherapistDto) {}
+export class UpdateAdminDto extends PartialType(CreateAdminDto) {}

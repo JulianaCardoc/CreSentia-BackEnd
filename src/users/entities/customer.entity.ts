@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 import { Person } from './person.entity';
 import { Rol } from './rol.entity';
-import { UserMembership } from 'src/memberships/entities/userMembership.entity';
+import { UserMembership } from 'src/memberships/entities/user-membership.entity';
 
 @Entity()
 export class Customer {

@@ -6,7 +6,7 @@ import { MembershipsController } from './controllers/membership.controller';
 import { MembershipService } from './services/memberships.service';
 import { UserMembershipController } from './controllers/user-membership.controller';
 import { UserMembershipService } from './services/user-membership.service';
-import { UserMembership } from './entities/userMembership.entity';
+import { UserMembership } from './entities/user-membership.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Membership, UserMembership])],

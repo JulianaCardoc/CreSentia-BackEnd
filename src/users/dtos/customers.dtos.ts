@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCustomerDto {
@@ -26,10 +26,12 @@ export class CreateCustomerDto {
   @ApiProperty()
   @IsString()
   @IsUUID()
+  @IsOptional()
   readonly rolId: string;
 
   @ApiProperty()
   @IsUUID()
+  @IsOptional()
   readonly userMembershipId: string;
 }
 

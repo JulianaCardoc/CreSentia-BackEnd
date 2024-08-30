@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePersonDto {
@@ -35,9 +35,9 @@ export class CreatePersonDto {
   readonly eps: string;
 
   @ApiProperty()
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
-  readonly birthDate: Date;
+  readonly birthDate: string;
 
   @ApiProperty()
   @IsString()

@@ -4,7 +4,6 @@ import {
   CreateCustomerDto,
   LoginCustomerDto,
 } from 'src/users/dtos/customers.dtos';
-import { JwtAuthGuard } from '../guards/customer.guard';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -14,7 +13,7 @@ export class AuthenticationController {
     return this.customersService.create(payload);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards()
   @Post('login')
   login(@Body() payload: LoginCustomerDto) {
     return this.customersService.login(payload);

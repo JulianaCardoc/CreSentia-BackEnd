@@ -18,7 +18,7 @@ export class Person {
   @Column({ type: 'varchar', length: 255 })
   lastname: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'bigint' })
   phone: number;
 
   @Column({ type: 'varchar', length: 255 })
@@ -31,7 +31,7 @@ export class Person {
   eps: string;
 
   @Column({ type: 'varchar', length: 255, name: 'birth_date' })
-  birthDate: Date;
+  birthDate: string;
 
   @Column({ type: 'varchar', length: 255 })
   country: string;

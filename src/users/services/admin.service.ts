@@ -52,8 +52,9 @@ export class AdminService {
   }
 
   async softRemove(id: string) {
-    if (!id) {
-      throw new NotFoundException(`Admin #${id} not found`);
+    const exist = await this.adminRepo.findOneBy({ id });
+    if (!exist) {
+      throw new NotFoundException(`Admin with id #${id} not found`);
     }
     const res: DeleteResult = await this.adminRepo.softDelete(id);
     if (res.affected > 0) {

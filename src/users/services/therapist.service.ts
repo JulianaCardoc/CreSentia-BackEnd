@@ -56,8 +56,9 @@ export class TherapistService {
   }
 
   async softRemove(id: string) {
-    if (!id) {
-      throw new NotFoundException(`Therapist #${id} not found`);
+    const exist = await this.therapistRepo.findOneBy({ id });
+    if (!exist) {
+      throw new NotFoundException(`Therapist with id #${id} not found`);
     }
     const res: DeleteResult = await this.therapistRepo.softDelete(id);
     if (res.affected > 0) {

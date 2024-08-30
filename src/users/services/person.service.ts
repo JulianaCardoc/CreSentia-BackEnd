@@ -44,7 +44,8 @@ export class PersonService {
   }
 
   async softRemove(id: string) {
-    if (!id) {
+    const exist = await this.personRepo.findOneBy({ id });
+    if (!exist) {
       throw new NotFoundException(`Person #${id} not found`);
     }
     const res: DeleteResult = await this.personRepo.softDelete(id);

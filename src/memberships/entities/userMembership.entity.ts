@@ -3,12 +3,14 @@ import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
+  Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Membership } from './membership.entities';
 
+@Entity()
 export class UserMembership {
   @PrimaryGeneratedColumn('uuid')
   id: string;

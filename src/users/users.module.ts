@@ -18,6 +18,7 @@ import { Rol } from './entities/rol.entity';
 import { PersonController } from './controllers/person.controller';
 import { PersonService } from './services/person.service';
 import { Person } from './entities/person.entity';
+import { MembershipsModule } from 'src/memberships/memberships.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { Person } from './entities/person.entity';
       secret: jwtConstant.secret,
       signOptions: { expiresIn: '6h' },
     }),
+    MembershipsModule,
   ],
   controllers: [
     CustomersController,
@@ -43,5 +45,6 @@ import { Person } from './entities/person.entity';
     RolService,
     PersonService,
   ],
+  exports: [],
 })
 export class UsersModule {}

@@ -27,7 +27,7 @@ export class CustomersService {
     @InjectRepository(Customer) private productRepo: Repository<Customer>,
     private jwtService: JwtService,
     private personService: PersonService,
-    private rolService:RolService,
+    private rolService: RolService,
   ) {}
 
   findAll(limit?: number, offset?: number) {

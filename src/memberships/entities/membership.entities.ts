@@ -2,12 +2,14 @@ import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
+  Entity,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserMembership } from './userMembership.entity';
 
+@Entity()
 export class Membership {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -18,7 +20,7 @@ export class Membership {
   @Column({ type: 'varchar', length: 255 })
   description: string;
 
-  @Column({ type: 'int', length: 255 })
+  @Column({ type: 'int' })
   price: number;
 
   @Column({ type: 'int' })
